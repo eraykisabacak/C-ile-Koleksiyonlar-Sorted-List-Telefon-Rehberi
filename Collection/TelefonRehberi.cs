@@ -29,15 +29,25 @@ namespace Collection
             while(yazi != null)
             {
                 string[] dizi = yazi.Split('|');
-                if (rehber.ContainsKey(dizi[1]))
-                {
-                    rehber[dizi[1]].Add(dizi[0], dizi[2]);
-                }
-                else
+
+                if (!rehber.ContainsKey(dizi[1]))
                 {
                     rehber.Add(dizi[1], new SortedDictionary<string, string>());
                     rehber[dizi[1]].Add(dizi[0], dizi[2]);
                 }
+                else
+                {
+                    if (rehber[dizi[1]].ContainsKey(dizi[0]))
+                    {
+                        rehber[dizi[1]][dizi[0]] += "\n\t \t \t   " + dizi[2];
+                        //Console.WriteLine("sdf");
+                    }
+                    else
+                    {
+                        rehber[dizi[1]].Add(dizi[0], dizi[2]);
+                    }
+                }
+                
                 yazi = sr.ReadLine();
             }
 
@@ -46,7 +56,8 @@ namespace Collection
 
             foreach(var obje in rehber)
             {
-                Console.WriteLine(obje.Key + " : ");
+                var objeValue = obje.Value;
+                Console.WriteLine(obje.Key+ " : ");
 
                 foreach (var bilgiler in obje.Value)
                 {
@@ -56,10 +67,10 @@ namespace Collection
                         txt += " ";
                     }
                     txt += " - ";
-                    for (int i = 0; i < 20 - (bilgiler.Value.Length); i++)
-                    {
+                    //for (int i = 0; i < 20 /*- (bilgiler.Value.Length)*/; i++)
+                    //{
                         txt += " ";
-                    }
+                    //}
                     Console.WriteLine(txt + bilgiler.Value);
                 }
             }
